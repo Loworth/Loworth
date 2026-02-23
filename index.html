@@ -1,266 +1,97 @@
-import React, { useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, ChevronLeft, CheckCircle, Phone, User, MessageSquare, Calendar, Loader2 } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loworth - Consulta Legal</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <style>
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        body { background-color: #3e3631; color: #c5b4a2; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
 
-const App = () => {
-  const [step, setStep] = useState(0);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isSending, setIsSending] = useState(false);
-  const [error, setError] = useState(null);
-  
-  const [formData, setFormData] = useState({
-    nombre: '',
-    telefono: '',
-    diaPreferencia: '',
-    horarioPreferencia: '',
-    area: '',
-    mensaje: ''
-  });
+    <script type="text/babel">
+        const { useState, useCallback } = React;
 
-  // Áreas actualizadas según pedido
-  const areas = [
-    "Ciudadanías y armado de carpetas",
-    "Marcas y Patentes",
-    "Contratos",
-    "Sucesiones",
-    "Seguros y ART",
-    "Derecho Internacional (Apostillados)"
-  ];
+        const App = () => {
+            const [step, setStep] = useState(0);
+            const [isSubmitted, setIsSubmitted] = useState(false);
+            const [formData, setFormData] = useState({
+                nombre: '', telefono: '', diaPreferencia: '', horarioPreferencia: '', area: '', mensaje: ''
+            });
 
-  const horarios = ["Mañana (9:00 - 13:00)", "Tarde (13:00 - 18:00)", "Indistinto"];
+            const areas = ["Ciudadanías y armado de carpetas", "Marcas y Patentes", "Contratos", "Sucesiones", "Seguros y ART", "Derecho Internacional (Apostillados)"];
+            const horarios = ["Mañana (9:00 - 13:00)", "Tarde (13:00 - 18:00)", "Indistinto"];
 
-  const updateField = useCallback((field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  }, []);
+            const handleNext = () => setStep(prev => prev + 1);
+            const handlePrev = () => setStep(prev => prev - 1);
 
-  const handleNext = () => setStep(prev => prev + 1);
-  const handlePrev = () => setStep(prev => prev - 1);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSending(true);
-    setError(null);
-
-    // NOTA: Para que funcione, crea un formulario en formspree.io 
-    // y reemplaza 'TU_ID_AQUI' por el código que te den.
-    const formspreeUrl = "https://formspree.io/f/loworth_contact_form"; // Reemplazar con ID real
-
-    try {
-      const response = await fetch(formspreeUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          ...formData,
-          _subject: `Nueva Consulta Legal: ${formData.area} - ${formData.nombre}`,
-          _message: `Consulta de ${formData.nombre}. Teléfono: ${formData.telefono}. Día preferido: ${formData.diaPreferencia} en horario ${formData.horarioPreferencia}.`
-        })
-      });
-
-      if (response.ok) {
-        setIsSubmitted(true);
-      } else {
-        throw new Error('Error al enviar');
-      }
-    } catch (err) {
-      // Si falla por no tener el ID real, simulamos éxito para que veas el resultado visual
-      // pero en producción debe tener el ID correcto.
-      setTimeout(() => setIsSubmitted(true), 1500);
-    } finally {
-      setIsSending(false);
-    }
-  };
-
-  const brandColors = {
-    bg: "#3e3631",
-    text: "#c5b4a2"
-  };
-
-  const inputStyle = "w-full bg-transparent border-none outline-none text-lg font-uniform tracking-widest placeholder:opacity-30 placeholder:italic";
-
-  return (
-    <div 
-      className="min-h-screen flex flex-col items-center justify-between font-serif p-6 md:p-12 selection:bg-[#c5b4a2] selection:text-[#3e3631]"
-      style={{ backgroundColor: brandColors.bg, color: brandColors.text }}
-    >
-      <style>
-        {`
-          @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,400&display=swap');
-          .font-cinzel { font-family: 'Cinzel', serif; }
-          .font-playfair { font-family: 'Playfair Display', serif; }
-          .font-uniform { font-family: 'Playfair Display', serif; }
-          input:focus, textarea:focus { outline: none; }
-          textarea { resize: none; }
-        `}
-      </style>
-
-      <header className="w-full text-center mt-4">
-        <h1 className="text-4xl md:text-5xl font-cinzel tracking-[0.3em] uppercase mb-1">LOWORTH</h1>
-        <p className="text-xl md:text-2xl font-playfair italic opacity-80 tracking-widest">Loworth</p>
-        {!isSubmitted && (
-           <div className="mt-4 flex flex-col items-center opacity-40">
-             <div className="w-12 h-[1px] bg-[#c5b4a2]"></div>
-             <p className="mt-2 text-[9px] tracking-[0.4em] uppercase font-cinzel">Sección {step} de 4</p>
-           </div>
-        )}
-      </header>
-
-      <main className="w-full max-w-xl flex-grow flex items-center justify-center py-8">
-        <AnimatePresence mode="wait">
-          {!isSubmitted ? (
-            <div key="form-steps" className="w-full">
-              
-              {/* PASO 0: INICIO */}
-              {step === 0 && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-center space-y-8">
-                  <h2 className="text-xl font-cinzel tracking-[0.2em] uppercase">Consulta Legal Online</h2>
-                  <p className="font-playfair italic text-lg opacity-70">Expertos en estrategia y derecho.</p>
-                  <button onClick={handleNext} className="border border-[#c5b4a2] px-12 py-4 hover:bg-[#c5b4a2] hover:text-[#3e3631] transition-all uppercase tracking-[0.2em] text-xs font-bold font-cinzel">
-                    Iniciar
-                  </button>
-                </motion.div>
-              )}
-
-              {/* PASO 1: CONTACTO */}
-              {step === 1 && (
-                <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="space-y-10">
-                  <div className="space-y-8">
-                    <div className="border-b border-[#c5b4a2]/20 py-2">
-                      <label className="text-[10px] tracking-[0.3em] uppercase opacity-40 block mb-2 font-cinzel">Nombre Completo</label>
-                      <div className="flex items-center gap-4">
-                        <User size={18} className="opacity-30" />
-                        <input type="text" autoFocus className={inputStyle} value={formData.nombre} onChange={(e) => updateField('nombre', e.target.value)} placeholder="Su nombre aquí..." />
-                      </div>
+            if (isSubmitted) {
+                return (
+                    <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
+                        <h2 className="text-3xl font-cinzel tracking-[0.2em] uppercase">Recibido</h2>
+                        <p className="font-playfair italic text-lg opacity-80 mt-4">Procesaremos su consulta con la mayor diligencia.</p>
+                        <button onClick={() => { setIsSubmitted(false); setStep(0); }} className="mt-8 text-[9px] uppercase tracking-[0.4em] underline">Nueva Solicitud</button>
                     </div>
-                    <div className="border-b border-[#c5b4a2]/20 py-2">
-                      <label className="text-[10px] tracking-[0.3em] uppercase opacity-40 block mb-2 font-cinzel">WhatsApp / Teléfono</label>
-                      <div className="flex items-center gap-4">
-                        <Phone size={18} className="opacity-30" />
-                        <input type="tel" className={inputStyle} value={formData.telefono} onChange={(e) => updateField('telefono', e.target.value)} placeholder="+54..." />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between pt-4">
-                    <button onClick={handlePrev} className="opacity-40 hover:opacity-100 flex items-center text-[10px] uppercase tracking-[0.2em] font-cinzel"><ChevronLeft size={14}/> Atrás</button>
-                    <button onClick={handleNext} disabled={!formData.nombre || !formData.telefono} className={`flex items-center text-[10px] uppercase tracking-[0.2em] font-cinzel ${(!formData.nombre || !formData.telefono) ? 'opacity-10' : 'hover:underline'}`}>Siguiente <ChevronRight size={14}/></button>
-                  </div>
-                </motion.div>
-              )}
+                );
+            }
 
-              {/* PASO 2: DISPONIBILIDAD */}
-              {step === 2 && (
-                <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="space-y-8">
-                  <h3 className="text-center text-[11px] tracking-[0.2em] uppercase font-cinzel opacity-80">Preferencia de Contacto</h3>
-                  <div className="space-y-8">
-                    <div className="border-b border-[#c5b4a2]/20 py-2">
-                      <label className="text-[10px] tracking-[0.3em] uppercase opacity-40 block mb-2 font-cinzel text-center">¿Qué día prefiere ser contactado?</label>
-                      <div className="flex items-center gap-4">
-                        <Calendar size={18} className="opacity-30" />
-                        <input type="text" placeholder="Ej: Lunes, lo antes posible..." className={inputStyle + " text-center"} value={formData.diaPreferencia} onChange={(e) => updateField('diaPreferencia', e.target.value)} />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-1 gap-2 pt-2">
-                      <label className="text-[10px] tracking-[0.3em] uppercase opacity-40 block mb-2 font-cinzel text-center">Franja Horaria</label>
-                      <div className="flex flex-wrap justify-center gap-2">
-                        {horarios.map(h => (
-                          <button 
-                            key={h} 
-                            onClick={() => updateField('horarioPreferencia', h)}
-                            className={`px-4 py-2 text-[10px] uppercase tracking-widest border border-[#c5b4a2]/20 transition-all font-cinzel ${formData.horarioPreferencia === h ? 'bg-[#c5b4a2] text-[#3e3631]' : 'hover:border-[#c5b4a2]'}`}
-                          >
-                            {h}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between pt-6 font-cinzel">
-                    <button onClick={handlePrev} className="opacity-40 hover:opacity-100 flex items-center text-[10px] uppercase tracking-[0.2em]"><ChevronLeft size={14}/> Atrás</button>
-                    <button onClick={handleNext} disabled={!formData.diaPreferencia || !formData.horarioPreferencia} className={`flex items-center text-[10px] uppercase tracking-[0.2em] ${(!formData.diaPreferencia || !formData.horarioPreferencia) ? 'opacity-10' : 'hover:underline'}`}>Siguiente <ChevronRight size={14}/></button>
-                  </div>
-                </motion.div>
-              )}
+            return (
+                <div className="min-h-screen flex flex-col items-center justify-between p-6 md:p-12 font-serif">
+                    <header className="text-center mt-4">
+                        <h1 className="text-4xl md:text-5xl font-cinzel tracking-[0.3em] uppercase">LOWORTH</h1>
+                        <p className="text-xl md:text-2xl font-playfair italic opacity-80">Estrategia y Derecho</p>
+                    </header>
 
-              {/* PASO 3: ÁREA (Actualizada) */}
-              {step === 3 && (
-                <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="space-y-4">
-                  <h3 className="text-center text-[11px] tracking-[0.2em] uppercase font-cinzel opacity-60 mb-6 italic">Seleccione el área de su consulta</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    {areas.map((area) => (
-                      <button
-                        key={area}
-                        onClick={() => { updateField('area', area); handleNext(); }}
-                        className={`p-4 border text-[10px] text-left uppercase tracking-widest transition-all font-uniform
-                          ${formData.area === area ? 'bg-[#c5b4a2] text-[#3e3631]' : 'border-[#c5b4a2]/10 hover:border-[#c5b4a2]/60'}`}
-                      >
-                        {area}
-                      </button>
-                    ))}
-                  </div>
-                  <button onClick={handlePrev} className="mt-8 opacity-40 hover:opacity-100 flex items-center text-[10px] uppercase tracking-[0.2em] mx-auto font-cinzel"><ChevronLeft size={14}/> Volver</button>
-                </motion.div>
-              )}
+                    <main className="w-full max-w-xl flex-grow flex items-center justify-center">
+                        {step === 0 && (
+                            <div className="text-center space-y-8">
+                                <h2 className="text-xl font-cinzel tracking-[0.2em] uppercase">Consulta Legal Online</h2>
+                                <button onClick={handleNext} className="border border-[#c5b4a2] px-12 py-4 hover:bg-[#c5b4a2] hover:text-[#3e3631] transition-all uppercase tracking-[0.2em] text-xs font-bold font-cinzel">Iniciar</button>
+                            </div>
+                        )}
+                        {step === 1 && (
+                            <div className="w-full space-y-8">
+                                <input type="text" placeholder="Nombre Completo" className="w-full bg-transparent border-b border-[#c5b4a2]/20 p-4 outline-none" onChange={(e) => setFormData({...formData, nombre: e.target.value})} />
+                                <input type="tel" placeholder="WhatsApp / Teléfono" className="w-full bg-transparent border-b border-[#c5b4a2]/20 p-4 outline-none" onChange={(e) => setFormData({...formData, telefono: e.target.value})} />
+                                <div className="flex justify-between">
+                                    <button onClick={handlePrev} className="opacity-50 uppercase text-xs">Atrás</button>
+                                    <button onClick={handleNext} className="uppercase text-xs font-bold">Siguiente</button>
+                                </div>
+                            </div>
+                        )}
+                        {step === 2 && (
+                            <div className="w-full space-y-6 text-center">
+                                <h3 className="font-cinzel text-xs tracking-widest uppercase">Área de consulta</h3>
+                                <div className="grid grid-cols-1 gap-2">
+                                    {areas.map(a => (
+                                        <button key={a} onClick={() => { setFormData({...formData, area: a}); handleNext(); }} className="border border-[#c5b4a2]/20 p-3 hover:bg-[#c5b4a2] hover:text-[#3e3631] uppercase text-[10px] tracking-tighter">{a}</button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                        {step === 3 && (
+                            <div className="w-full space-y-6">
+                                <textarea placeholder="Describa su situación..." className="w-full bg-transparent border border-[#c5b4a2]/20 p-4 h-40 outline-none" onChange={(e) => setFormData({...formData, mensaje: e.target.value})} />
+                                <button onClick={() => setIsSubmitted(true)} className="w-full bg-[#c5b4a2] text-[#3e3631] py-4 uppercase font-bold text-xs tracking-[0.3em]">Enviar Consulta</button>
+                            </div>
+                        )}
+                    </main>
+                    <footer className="text-[10px] tracking-[0.5em] opacity-40 uppercase">Loworth Digital Law Firm</footer>
+                </div>
+            );
+        };
 
-              {/* PASO 4: MENSAJE */}
-              {step === 4 && (
-                <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="space-y-6">
-                  <div className="border border-[#c5b4a2]/20 p-6 min-h-[250px] flex flex-col">
-                    <label className="text-[10px] tracking-[0.3em] uppercase opacity-40 mb-4 font-cinzel flex items-center gap-2">
-                      <MessageSquare size={14} /> Detalles adicionales
-                    </label>
-                    <textarea 
-                      autoFocus
-                      rows={8}
-                      className={inputStyle + " text-sm leading-relaxed"}
-                      placeholder="Describa su situación con confianza..."
-                      value={formData.mensaje}
-                      onChange={(e) => updateField('mensaje', e.target.value)}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-4 font-cinzel">
-                    <button
-                      onClick={handleSubmit}
-                      disabled={!formData.mensaje || isSending}
-                      className={`w-full bg-[#c5b4a2] text-[#3e3631] py-5 uppercase tracking-[0.4em] font-bold text-xs transition-all border border-[#c5b4a2] hover:bg-transparent hover:text-[#c5b4a2] flex justify-center items-center gap-2
-                        ${(!formData.mensaje || isSending) ? 'opacity-20 cursor-not-allowed' : ''}`}
-                    >
-                      {isSending ? <Loader2 className="animate-spin" size={16} /> : "Enviar Consulta"}
-                    </button>
-                    <button onClick={handlePrev} className="opacity-40 hover:opacity-100 flex items-center justify-center text-[10px] uppercase tracking-[0.2em]"><ChevronLeft size={14}/> Atrás</button>
-                  </div>
-                </motion.div>
-              )}
-
-            </div>
-          ) : (
-            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center space-y-8">
-              <CheckCircle size={50} className="mx-auto opacity-60" strokeWidth={1} />
-              <div className="space-y-2">
-                <h2 className="text-3xl font-cinzel tracking-[0.2em] uppercase">Recibido</h2>
-                <p className="font-playfair italic text-lg opacity-80">Procesaremos su consulta con la mayor diligencia.</p>
-              </div>
-              <div className="w-8 h-[1px] bg-[#c5b4a2] mx-auto opacity-20 my-4"></div>
-              <p className="text-[10px] tracking-[0.3em] uppercase opacity-40 max-w-xs mx-auto leading-loose font-cinzel">
-                Un profesional de nuestro equipo se contactará el día solicitado.
-              </p>
-              <button 
-                onClick={() => { setIsSubmitted(false); setStep(0); setFormData({ nombre:'', telefono:'', diaPreferencia:'', horarioPreferencia:'', area:'', mensaje:'' }); }}
-                className="mt-8 text-[9px] uppercase tracking-[0.4em] opacity-60 hover:opacity-100 underline underline-offset-8 font-cinzel"
-              >
-                Nueva Solicitud
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </main>
-
-      <footer className="w-full text-center py-6">
-        <p className="text-[11px] tracking-[0.6em] uppercase opacity-40 font-cinzel">Estrategia y Derecho</p>
-      </footer>
-    </div>
-  );
-};
-
-export default App;
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
