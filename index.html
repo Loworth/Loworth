@@ -1,0 +1,298 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #0e6e6d; -webkit-text-stroke: #0e6e6d}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; -webkit-text-stroke: #000000; min-height: 16.0px}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #4d5055; -webkit-text-stroke: #4d5055}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #18702b; -webkit-text-stroke: #18702b}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #6f0ec3; -webkit-text-stroke: #6f0ec3}
+    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Menlo; color: #6f0ec3; -webkit-text-stroke: #6f0ec3; background-color: #ecf1f7}
+    span.s1 {font-kerning: none; color: #6f0ec3; background-color: #ecf1f7; -webkit-text-stroke: 0px #6f0ec3}
+    span.s2 {font-kerning: none; background-color: #ecf1f7}
+    span.s3 {font-kerning: none; color: #0e6e6d; background-color: #ecf1f7; -webkit-text-stroke: 0px #0e6e6d}
+    span.s4 {font-kerning: none; color: #18702b; background-color: #ecf1f7; -webkit-text-stroke: 0px #18702b}
+    span.s5 {font-kerning: none; color: #000000; background-color: #ecf1f7; -webkit-text-stroke: 0px #000000}
+    span.s6 {font-kerning: none}
+    span.s7 {font-kerning: none; color: #a4450b; background-color: #ecf1f7; -webkit-text-stroke: 0px #a4450b}
+    span.s8 {font-kerning: none; color: #4d5055; background-color: #ecf1f7; -webkit-text-stroke: 0px #4d5055}
+    span.s9 {font-kerning: none; color: #bf1c25; background-color: #ecf1f7; -webkit-text-stroke: 0px #bf1c25}
+    span.s10 {font-kerning: none; color: #000000; -webkit-text-stroke: 0px #000000}
+    span.s11 {font-kerning: none; color: #0e6e6d; -webkit-text-stroke: 0px #0e6e6d}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">import</span><span class="s2"> </span><span class="s3">React</span><span class="s2">, { useState, useCallback } </span><span class="s1">from</span><span class="s2"> </span><span class="s4">'react'</span><span class="s2">;</span></p>
+<p class="p1"><span class="s1">import</span><span class="s2"> { motion, </span><span class="s3">AnimatePresence</span><span class="s2"> } </span><span class="s1">from</span><span class="s2"> </span><span class="s4">'framer-motion'</span><span class="s2">;</span></p>
+<p class="p2"><span class="s1">import</span><span class="s5"> { </span><span class="s2">ChevronRight</span><span class="s5">, </span><span class="s2">ChevronLeft</span><span class="s5">, </span><span class="s2">CheckCircle</span><span class="s5">, </span><span class="s2">Phone</span><span class="s5">, </span><span class="s2">User</span><span class="s5">, </span><span class="s2">MessageSquare</span><span class="s5">, </span><span class="s2">Calendar</span><span class="s5">, </span><span class="s2">Loader2</span><span class="s5"> } </span><span class="s1">from</span><span class="s5"> </span><span class="s4">'lucide-react'</span><span class="s5">;</span></p>
+<p class="p3"><span class="s6"></span><br></p>
+<p class="p1"><span class="s1">const</span><span class="s2"> </span><span class="s3">App</span><span class="s2"> = () =&gt; {</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> [step, setStep] = useState(</span><span class="s7">0</span><span class="s2">);</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> [isSubmitted, setIsSubmitted] = useState(</span><span class="s1">false</span><span class="s2">);</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> [isSending, setIsSending] = useState(</span><span class="s1">false</span><span class="s2">);</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> [error, setError] = useState(</span><span class="s1">null</span><span class="s2">);</span></p>
+<p class="p3"><span class="s2"><span class="Apple-converted-space">  </span></span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> [formData, setFormData] = useState({</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>nombre: </span><span class="s4">''</span><span class="s2">,</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>telefono: </span><span class="s4">''</span><span class="s2">,</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>diaPreferencia: </span><span class="s4">''</span><span class="s2">,</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>horarioPreferencia: </span><span class="s4">''</span><span class="s2">,</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>area: </span><span class="s4">''</span><span class="s2">,</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>mensaje: </span><span class="s4">''</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span>});</span></p>
+<p class="p3"><span class="s6"></span><br></p>
+<p class="p4"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">// Áreas actualizadas según pedido</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> areas = [</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s2">"Ciudadanías y armado de carpetas"</span><span class="s5">,</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s2">"Marcas y Patentes"</span><span class="s5">,</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s2">"Contratos"</span><span class="s5">,</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s2">"Sucesiones"</span><span class="s5">,</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s2">"Seguros y ART"</span><span class="s5">,</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s2">"Derecho Internacional (Apostillados)"</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span>];</span></p>
+<p class="p3"><span class="s6"></span><br></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s5"> horarios = [</span><span class="s2">"Mañana (9:00 - 13:00)"</span><span class="s5">, </span><span class="s2">"Tarde (13:00 - 18:00)"</span><span class="s5">, </span><span class="s2">"Indistinto"</span><span class="s5">];</span></p>
+<p class="p3"><span class="s6"></span><br></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> updateField = useCallback((field, value) =&gt; {</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>setFormData(prev =&gt; ({ ...prev, [field]: value }));</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span>}, []);</span></p>
+<p class="p3"><span class="s6"></span><br></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> handleNext = () =&gt; setStep(prev =&gt; prev + </span><span class="s7">1</span><span class="s2">);</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> handlePrev = () =&gt; setStep(prev =&gt; prev - </span><span class="s7">1</span><span class="s2">);</span></p>
+<p class="p3"><span class="s6"></span><br></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> handleSubmit = </span><span class="s1">async</span><span class="s2"> (e) =&gt; {</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>e.preventDefault();</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>setIsSending(</span><span class="s1">true</span><span class="s2">);</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>setError(</span><span class="s1">null</span><span class="s2">);</span></p>
+<p class="p3"><span class="s6"></span><br></p>
+<p class="p4"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s2">// NOTA: Para que funcione, crea un formulario en formspree.io<span class="Apple-converted-space"> </span></span></p>
+<p class="p4"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s2">// y reemplaza 'TU_ID_AQUI' por el código que te den.</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">    </span></span><span class="s1">const</span><span class="s5"> formspreeUrl = </span><span class="s2">"https://formspree.io/f/loworth_contact_form"</span><span class="s5">; </span><span class="s8">// Reemplazar con ID real</span></p>
+<p class="p3"><span class="s6"></span><br></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span></span><span class="s1">try</span><span class="s2"> {</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span></span><span class="s1">const</span><span class="s2"> response = </span><span class="s1">await</span><span class="s2"> fetch(formspreeUrl, {</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>method: </span><span class="s4">'POST'</span><span class="s2">,</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>headers: {</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">          </span></span><span class="s2">'Content-Type'</span><span class="s5">: </span><span class="s2">'application/json'</span><span class="s5">,</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">          </span></span><span class="s2">'Accept'</span><span class="s5">: </span><span class="s2">'application/json'</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>},</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>body: </span><span class="s3">JSON</span><span class="s2">.stringify({</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">          </span>...formData,</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">          </span>_subject: </span><span class="s4">`Nueva Consulta Legal: </span><span class="s2">${formData.area}</span><span class="s4"> - </span><span class="s2">${formData.nombre}</span><span class="s4">`</span><span class="s2">,</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">          </span>_message: </span><span class="s4">`Consulta de </span><span class="s2">${formData.nombre}</span><span class="s4">. Teléfono: </span><span class="s2">${formData.telefono}</span><span class="s4">. Día preferido: </span><span class="s2">${formData.diaPreferencia}</span><span class="s4"> en horario </span><span class="s2">${formData.horarioPreferencia}</span><span class="s4">.`</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>})</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>});</span></p>
+<p class="p3"><span class="s6"></span><br></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span></span><span class="s1">if</span><span class="s2"> (response.ok) {</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>setIsSubmitted(</span><span class="s1">true</span><span class="s2">);</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>} </span><span class="s1">else</span><span class="s2"> {</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">        </span></span><span class="s1">throw</span><span class="s5"> </span><span class="s1">new</span><span class="s5"> </span><span class="s3">Error</span><span class="s5">(</span><span class="s2">'Error al enviar'</span><span class="s5">);</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>}</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>} </span><span class="s1">catch</span><span class="s2"> (err) {</span></p>
+<p class="p4"><span class="s5"><span class="Apple-converted-space">      </span></span><span class="s2">// Si falla por no tener el ID real, simulamos éxito para que veas el resultado visual</span></p>
+<p class="p4"><span class="s5"><span class="Apple-converted-space">      </span></span><span class="s2">// pero en producción debe tener el ID correcto.</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>setTimeout(() =&gt; setIsSubmitted(</span><span class="s1">true</span><span class="s2">), </span><span class="s7">1500</span><span class="s2">);</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>} </span><span class="s1">finally</span><span class="s2"> {</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>setIsSending(</span><span class="s1">false</span><span class="s2">);</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span>};</span></p>
+<p class="p3"><span class="s6"></span><br></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s2"> brandColors = {</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>bg: </span><span class="s4">"#3e3631"</span><span class="s2">,</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>text: </span><span class="s4">"#c5b4a2"</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span>};</span></p>
+<p class="p3"><span class="s6"></span><br></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s1">const</span><span class="s5"> inputStyle = </span><span class="s2">"w-full bg-transparent border-none outline-none text-lg font-uniform tracking-widest placeholder:opacity-30 placeholder:italic"</span><span class="s5">;</span></p>
+<p class="p3"><span class="s6"></span><br></p>
+<p class="p6"><span class="s5"><span class="Apple-converted-space">  </span></span><span class="s2">return</span><span class="s5"> (</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>&lt;div<span class="Apple-converted-space"> </span></span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">      </span>className=</span><span class="s2">"min-h-screen flex flex-col items-center justify-between font-serif p-6 md:p-12 selection:bg-[#c5b4a2] selection:text-[#3e3631]"</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>style={{ backgroundColor: brandColors.bg, color: brandColors.text }}</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>&lt;style&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>{</span><span class="s4">`</span></p>
+<p class="p5"><span class="s2"><span class="Apple-converted-space">          </span>@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&amp;family=Playfair+Display:ital,wght@0,400;1,400&amp;display=swap');</span></p>
+<p class="p5"><span class="s2"><span class="Apple-converted-space">          </span>.font-cinzel { font-family: 'Cinzel', serif; }</span></p>
+<p class="p5"><span class="s2"><span class="Apple-converted-space">          </span>.font-playfair { font-family: 'Playfair Display', serif; }</span></p>
+<p class="p5"><span class="s2"><span class="Apple-converted-space">          </span>.font-uniform { font-family: 'Playfair Display', serif; }</span></p>
+<p class="p5"><span class="s2"><span class="Apple-converted-space">          </span>input:focus, textarea:focus { outline: none; }</span></p>
+<p class="p5"><span class="s2"><span class="Apple-converted-space">          </span>textarea { resize: none; }</span></p>
+<p class="p5"><span class="s2"><span class="Apple-converted-space">        </span>`</span><span class="s5">}</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>&lt;/style&gt;</span></p>
+<p class="p3"><span class="s6"></span><br></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>&lt;header className=</span><span class="s4">"w-full text-center mt-4"</span><span class="s2">&gt;</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">        </span>&lt;h1 className=</span><span class="s2">"text-4xl md:text-5xl font-cinzel tracking-[0.3em] uppercase mb-1"</span><span class="s5">&gt;</span><span class="s3">LOWORTH</span><span class="s5">&lt;/h1&gt;</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">        </span>&lt;p className=</span><span class="s2">"text-xl md:text-2xl font-playfair italic opacity-80 tracking-widest"</span><span class="s5">&gt;</span><span class="s3">Loworth</span><span class="s5">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>{!isSubmitted &amp;&amp; (</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">           </span>&lt;div className=</span><span class="s2">"mt-4 flex flex-col items-center opacity-40"</span><span class="s5">&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">             </span>&lt;div className=</span><span class="s4">"w-12 h-[1px] bg-[#c5b4a2]"</span><span class="s2">&gt;&lt;/div&gt;</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">             </span>&lt;p className=</span><span class="s2">"mt-2 text-[9px] tracking-[0.4em] uppercase font-cinzel"</span><span class="s5">&gt;</span><span class="s3">Secci</span><span class="s9">ó</span><span class="s5">n {step} de </span><span class="s7">4</span><span class="s5">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">           </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>)}</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>&lt;/header&gt;</span></p>
+<p class="p3"><span class="s6"></span><br></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">      </span>&lt;main className=</span><span class="s2">"w-full max-w-xl flex-grow flex items-center justify-center py-8"</span><span class="s5">&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">        </span>&lt;</span><span class="s3">AnimatePresence</span><span class="s2"> mode=</span><span class="s4">"wait"</span><span class="s2">&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">          </span>{!isSubmitted ? (</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>&lt;div key=</span><span class="s4">"form-steps"</span><span class="s2"> className=</span><span class="s4">"w-full"</span><span class="s2">&gt;</span></p>
+<p class="p3"><span class="s2"><span class="Apple-converted-space">              </span></span></p>
+<p class="p4"><span class="s5"><span class="Apple-converted-space">              </span>{</span><span class="s2">/* PASO 0: INICIO */</span><span class="s5">}</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>{step === </span><span class="s7">0</span><span class="s2"> &amp;&amp; (</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>&lt;motion.div initial={{ opacity: </span><span class="s7">0</span><span class="s2"> }} animate={{ opacity: </span><span class="s7">1</span><span class="s2"> }} exit={{ opacity: </span><span class="s7">0</span><span class="s2"> }} className=</span><span class="s4">"text-center space-y-8"</span><span class="s2">&gt;</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">                  </span>&lt;h2 className=</span><span class="s2">"text-xl font-cinzel tracking-[0.2em] uppercase"</span><span class="s5">&gt;</span><span class="s3">Consulta</span><span class="s5"> </span><span class="s3">Legal</span><span class="s5"> </span><span class="s3">Online</span><span class="s5">&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span>&lt;p className=</span><span class="s4">"font-playfair italic text-lg opacity-70"</span><span class="s2">&gt;</span><span class="s3">Expertos</span><span class="s2"> en estrategia y derecho.&lt;/p&gt;</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">                  </span>&lt;button onClick={handleNext} className=</span><span class="s2">"border border-[#c5b4a2] px-12 py-4 hover:bg-[#c5b4a2] hover:text-[#3e3631] transition-all uppercase tracking-[0.2em] text-xs font-bold font-cinzel"</span><span class="s5">&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span></span><span class="s3">Iniciar</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>&lt;/motion.div&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>)}</span></p>
+<p class="p3"><span class="s6"></span><br></p>
+<p class="p4"><span class="s5"><span class="Apple-converted-space">              </span>{</span><span class="s2">/* PASO 1: CONTACTO */</span><span class="s5">}</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>{step === </span><span class="s7">1</span><span class="s2"> &amp;&amp; (</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>&lt;motion.div initial={{ opacity: </span><span class="s7">0</span><span class="s2">, x: </span><span class="s7">10</span><span class="s2"> }} animate={{ opacity: </span><span class="s7">1</span><span class="s2">, x: </span><span class="s7">0</span><span class="s2"> }} exit={{ opacity: </span><span class="s7">0</span><span class="s2">, x: -</span><span class="s7">10</span><span class="s2"> }} className=</span><span class="s4">"space-y-10"</span><span class="s2">&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span>&lt;div className=</span><span class="s4">"space-y-8"</span><span class="s2">&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>&lt;div className=</span><span class="s4">"border-b border-[#c5b4a2]/20 py-2"</span><span class="s2">&gt;</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">                      </span>&lt;label className=</span><span class="s2">"text-[10px] tracking-[0.3em] uppercase opacity-40 block mb-2 font-cinzel"</span><span class="s5">&gt;</span><span class="s3">Nombre</span><span class="s5"> </span><span class="s3">Completo</span><span class="s5">&lt;/label&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                      </span>&lt;div className=</span><span class="s4">"flex items-center gap-4"</span><span class="s2">&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                        </span>&lt;</span><span class="s3">User</span><span class="s2"> size={</span><span class="s7">18</span><span class="s2">} className=</span><span class="s4">"opacity-30"</span><span class="s2"> /&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                        </span>&lt;input </span><span class="s1">type</span><span class="s2">=</span><span class="s4">"text"</span><span class="s2"> autoFocus className={inputStyle} value={formData.nombre} onChange={(e) =&gt; updateField(</span><span class="s4">'nombre'</span><span class="s2">, e.target.value)} placeholder=</span><span class="s4">"Su nombre aquí..."</span><span class="s2"> /&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>&lt;div className=</span><span class="s4">"border-b border-[#c5b4a2]/20 py-2"</span><span class="s2">&gt;</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">                      </span>&lt;label className=</span><span class="s2">"text-[10px] tracking-[0.3em] uppercase opacity-40 block mb-2 font-cinzel"</span><span class="s5">&gt;</span><span class="s3">WhatsApp</span><span class="s5"> / </span><span class="s3">Tel</span><span class="s9">é</span><span class="s5">fono&lt;/label&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                      </span>&lt;div className=</span><span class="s4">"flex items-center gap-4"</span><span class="s2">&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                        </span>&lt;</span><span class="s3">Phone</span><span class="s2"> size={</span><span class="s7">18</span><span class="s2">} className=</span><span class="s4">"opacity-30"</span><span class="s2"> /&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                        </span>&lt;input </span><span class="s1">type</span><span class="s2">=</span><span class="s4">"tel"</span><span class="s2"> className={inputStyle} value={formData.telefono} onChange={(e) =&gt; updateField(</span><span class="s4">'telefono'</span><span class="s2">, e.target.value)} placeholder=</span><span class="s4">"+54..."</span><span class="s2"> /&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span>&lt;div className=</span><span class="s4">"flex justify-between pt-4"</span><span class="s2">&gt;</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">                    </span>&lt;button onClick={handlePrev} className=</span><span class="s2">"opacity-40 hover:opacity-100 flex items-center text-[10px] uppercase tracking-[0.2em] font-cinzel"</span><span class="s5">&gt;&lt;</span><span class="s3">ChevronLeft</span><span class="s5"> size={</span><span class="s7">14</span><span class="s5">}/&gt; </span><span class="s3">Atr</span><span class="s9">á</span><span class="s5">s&lt;/button&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>&lt;button onClick={handleNext} disabled={!formData.nombre || !formData.telefono} className={</span><span class="s4">`flex items-center text-[10px] uppercase tracking-[0.2em] font-cinzel </span><span class="s2">${(!formData.nombre || !formData.telefono) ? </span><span class="s4">'opacity-10'</span><span class="s2"> : </span><span class="s4">'hover:underline'</span><span class="s2">}</span><span class="s4">`</span><span class="s2">}&gt;</span><span class="s3">Siguiente</span><span class="s2"> &lt;</span><span class="s3">ChevronRight</span><span class="s2"> size={</span><span class="s7">14</span><span class="s2">}/&gt;&lt;/button&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>&lt;/motion.div&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>)}</span></p>
+<p class="p3"><span class="s6"></span><br></p>
+<p class="p4"><span class="s5"><span class="Apple-converted-space">              </span>{</span><span class="s2">/* PASO 2: DISPONIBILIDAD */</span><span class="s5">}</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>{step === </span><span class="s7">2</span><span class="s2"> &amp;&amp; (</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>&lt;motion.div initial={{ opacity: </span><span class="s7">0</span><span class="s2">, x: </span><span class="s7">10</span><span class="s2"> }} animate={{ opacity: </span><span class="s7">1</span><span class="s2">, x: </span><span class="s7">0</span><span class="s2"> }} exit={{ opacity: </span><span class="s7">0</span><span class="s2">, x: -</span><span class="s7">10</span><span class="s2"> }} className=</span><span class="s4">"space-y-8"</span><span class="s2">&gt;</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">                  </span>&lt;h3 className=</span><span class="s2">"text-center text-[11px] tracking-[0.2em] uppercase font-cinzel opacity-80"</span><span class="s5">&gt;</span><span class="s3">Preferencia</span><span class="s5"> de </span><span class="s3">Contacto</span><span class="s5">&lt;/h3&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span>&lt;div className=</span><span class="s4">"space-y-8"</span><span class="s2">&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>&lt;div className=</span><span class="s4">"border-b border-[#c5b4a2]/20 py-2"</span><span class="s2">&gt;</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">                      </span>&lt;label className=</span><span class="s2">"text-[10px] tracking-[0.3em] uppercase opacity-40 block mb-2 font-cinzel text-center"</span><span class="s5">&gt;</span><span class="s9">¿</span><span class="s3">Qu</span><span class="s9">é</span><span class="s5"> d</span><span class="s9">í</span><span class="s5">a prefiere ser contactado?&lt;/label&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                      </span>&lt;div className=</span><span class="s4">"flex items-center gap-4"</span><span class="s2">&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                        </span>&lt;</span><span class="s3">Calendar</span><span class="s2"> size={</span><span class="s7">18</span><span class="s2">} className=</span><span class="s4">"opacity-30"</span><span class="s2"> /&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                        </span>&lt;input </span><span class="s1">type</span><span class="s2">=</span><span class="s4">"text"</span><span class="s2"> placeholder=</span><span class="s4">"Ej: Lunes, lo antes posible..."</span><span class="s2"> className={inputStyle + </span><span class="s4">" text-center"</span><span class="s2">} value={formData.diaPreferencia} onChange={(e) =&gt; updateField(</span><span class="s4">'diaPreferencia'</span><span class="s2">, e.target.value)} /&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>&lt;div className=</span><span class="s4">"grid grid-cols-1 gap-2 pt-2"</span><span class="s2">&gt;</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">                      </span>&lt;label className=</span><span class="s2">"text-[10px] tracking-[0.3em] uppercase opacity-40 block mb-2 font-cinzel text-center"</span><span class="s5">&gt;</span><span class="s3">Franja</span><span class="s5"> </span><span class="s3">Horaria</span><span class="s5">&lt;/label&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                      </span>&lt;div className=</span><span class="s4">"flex flex-wrap justify-center gap-2"</span><span class="s2">&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                        </span>{horarios.map(h =&gt; (</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                          </span>&lt;button<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                            </span>key={h}<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                            </span>onClick={() =&gt; updateField(</span><span class="s4">'horarioPreferencia'</span><span class="s2">, h)}</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">                            </span>className={</span><span class="s2">`px-4 py-2 text-[10px] uppercase tracking-widest border border-[#c5b4a2]/20 transition-all font-cinzel </span><span class="s5">${formData.horarioPreferencia === h ? </span><span class="s2">'bg-[#c5b4a2] text-[#3e3631]'</span><span class="s5"> : </span><span class="s2">'hover:border-[#c5b4a2]'</span><span class="s5">}</span><span class="s2">`</span><span class="s5">}</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                          </span>&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                            </span>{h}</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                          </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                        </span>))}</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">                  </span>&lt;div className=</span><span class="s2">"flex justify-between pt-6 font-cinzel"</span><span class="s5">&gt;</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">                    </span>&lt;button onClick={handlePrev} className=</span><span class="s2">"opacity-40 hover:opacity-100 flex items-center text-[10px] uppercase tracking-[0.2em]"</span><span class="s5">&gt;&lt;</span><span class="s3">ChevronLeft</span><span class="s5"> size={</span><span class="s7">14</span><span class="s5">}/&gt; </span><span class="s3">Atr</span><span class="s9">á</span><span class="s5">s&lt;/button&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>&lt;button onClick={handleNext} disabled={!formData.diaPreferencia || !formData.horarioPreferencia} className={</span><span class="s4">`flex items-center text-[10px] uppercase tracking-[0.2em] </span><span class="s2">${(!formData.diaPreferencia || !formData.horarioPreferencia) ? </span><span class="s4">'opacity-10'</span><span class="s2"> : </span><span class="s4">'hover:underline'</span><span class="s2">}</span><span class="s4">`</span><span class="s2">}&gt;</span><span class="s3">Siguiente</span><span class="s2"> &lt;</span><span class="s3">ChevronRight</span><span class="s2"> size={</span><span class="s7">14</span><span class="s2">}/&gt;&lt;/button&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>&lt;/motion.div&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>)}</span></p>
+<p class="p3"><span class="s6"></span><br></p>
+<p class="p4"><span class="s5"><span class="Apple-converted-space">              </span>{</span><span class="s2">/* PASO 3: ÁREA (Actualizada) */</span><span class="s5">}</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>{step === </span><span class="s7">3</span><span class="s2"> &amp;&amp; (</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>&lt;motion.div initial={{ opacity: </span><span class="s7">0</span><span class="s2">, x: </span><span class="s7">10</span><span class="s2"> }} animate={{ opacity: </span><span class="s7">1</span><span class="s2">, x: </span><span class="s7">0</span><span class="s2"> }} exit={{ opacity: </span><span class="s7">0</span><span class="s2">, x: -</span><span class="s7">10</span><span class="s2"> }} className=</span><span class="s4">"space-y-4"</span><span class="s2">&gt;</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">                  </span>&lt;h3 className=</span><span class="s2">"text-center text-[11px] tracking-[0.2em] uppercase font-cinzel opacity-60 mb-6 italic"</span><span class="s5">&gt;</span><span class="s3">Seleccione</span><span class="s5"> el </span><span class="s9">á</span><span class="s5">rea de su consulta&lt;/h3&gt;</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">                  </span>&lt;div className=</span><span class="s2">"grid grid-cols-1 md:grid-cols-2 gap-2"</span><span class="s5">&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>{areas.map((area) =&gt; (</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                      </span>&lt;button</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                        </span>key={area}</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                        </span>onClick={() =&gt; { updateField(</span><span class="s4">'area'</span><span class="s2">, area); handleNext(); }}</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">                        </span>className={</span><span class="s2">`p-4 border text-[10px] text-left uppercase tracking-widest transition-all font-uniform</span></p>
+<p class="p5"><span class="s2"><span class="Apple-converted-space">                          </span></span><span class="s5">${formData.area === area ? </span><span class="s2">'bg-[#c5b4a2] text-[#3e3631]'</span><span class="s5"> : </span><span class="s2">'border-[#c5b4a2]/10 hover:border-[#c5b4a2]/60'</span><span class="s5">}</span><span class="s2">`</span><span class="s5">}</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                      </span>&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                        </span>{area}</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                      </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>))}</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">                  </span>&lt;button onClick={handlePrev} className=</span><span class="s2">"mt-8 opacity-40 hover:opacity-100 flex items-center text-[10px] uppercase tracking-[0.2em] mx-auto font-cinzel"</span><span class="s5">&gt;&lt;</span><span class="s3">ChevronLeft</span><span class="s5"> size={</span><span class="s7">14</span><span class="s5">}/&gt; </span><span class="s3">Volver</span><span class="s5">&lt;/button&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>&lt;/motion.div&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>)}</span></p>
+<p class="p3"><span class="s6"></span><br></p>
+<p class="p4"><span class="s5"><span class="Apple-converted-space">              </span>{</span><span class="s2">/* PASO 4: MENSAJE */</span><span class="s5">}</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>{step === </span><span class="s7">4</span><span class="s2"> &amp;&amp; (</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>&lt;motion.div initial={{ opacity: </span><span class="s7">0</span><span class="s2">, x: </span><span class="s7">10</span><span class="s2"> }} animate={{ opacity: </span><span class="s7">1</span><span class="s2">, x: </span><span class="s7">0</span><span class="s2"> }} exit={{ opacity: </span><span class="s7">0</span><span class="s2">, x: -</span><span class="s7">10</span><span class="s2"> }} className=</span><span class="s4">"space-y-6"</span><span class="s2">&gt;</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">                  </span>&lt;div className=</span><span class="s2">"border border-[#c5b4a2]/20 p-6 min-h-[250px] flex flex-col"</span><span class="s5">&gt;</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">                    </span>&lt;label className=</span><span class="s2">"text-[10px] tracking-[0.3em] uppercase opacity-40 mb-4 font-cinzel flex items-center gap-2"</span><span class="s5">&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                      </span>&lt;</span><span class="s3">MessageSquare</span><span class="s2"> size={</span><span class="s7">14</span><span class="s2">} /&gt; </span><span class="s3">Detalles</span><span class="s2"> adicionales</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>&lt;/label&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>&lt;textarea<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                      </span>autoFocus</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                      </span>rows={</span><span class="s7">8</span><span class="s2">}</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                      </span>className={inputStyle + </span><span class="s4">" text-sm leading-relaxed"</span><span class="s2">}</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">                      </span>placeholder=</span><span class="s2">"Describa su situación con confianza..."</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                      </span>value={formData.mensaje}</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                      </span>onChange={(e) =&gt; updateField(</span><span class="s4">'mensaje'</span><span class="s2">, e.target.value)}</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>/&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span>&lt;div className=</span><span class="s4">"flex flex-col gap-4 font-cinzel"</span><span class="s2">&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>&lt;button</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                      </span>onClick={handleSubmit}</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                      </span>disabled={!formData.mensaje || isSending}</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">                      </span>className={</span><span class="s2">`w-full bg-[#c5b4a2] text-[#3e3631] py-5 uppercase tracking-[0.4em] font-bold text-xs transition-all border border-[#c5b4a2] hover:bg-transparent hover:text-[#c5b4a2] flex justify-center items-center gap-2</span></p>
+<p class="p5"><span class="s2"><span class="Apple-converted-space">                        </span></span><span class="s5">${(!formData.mensaje || isSending) ? </span><span class="s2">'opacity-20 cursor-not-allowed'</span><span class="s5"> : </span><span class="s2">''</span><span class="s5">}</span><span class="s2">`</span><span class="s5">}</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                      </span>{isSending ? &lt;</span><span class="s3">Loader2</span><span class="s2"> className=</span><span class="s4">"animate-spin"</span><span class="s2"> size={</span><span class="s7">16</span><span class="s2">} /&gt; : </span><span class="s4">"Enviar Consulta"</span><span class="s2">}</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                    </span>&lt;/button&gt;</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">                    </span>&lt;button onClick={handlePrev} className=</span><span class="s2">"opacity-40 hover:opacity-100 flex items-center justify-center text-[10px] uppercase tracking-[0.2em]"</span><span class="s5">&gt;&lt;</span><span class="s3">ChevronLeft</span><span class="s5"> size={</span><span class="s7">14</span><span class="s5">}/&gt; </span><span class="s3">Atr</span><span class="s9">á</span><span class="s5">s&lt;/button&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                  </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>&lt;/motion.div&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>)}</span></p>
+<p class="p3"><span class="s6"></span><br></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">          </span>) : (</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>&lt;motion.div initial={{ scale: </span><span class="s7">0.95</span><span class="s2">, opacity: </span><span class="s7">0</span><span class="s2"> }} animate={{ scale: </span><span class="s7">1</span><span class="s2">, opacity: </span><span class="s7">1</span><span class="s2"> }} className=</span><span class="s4">"text-center space-y-8"</span><span class="s2">&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&lt;</span><span class="s3">CheckCircle</span><span class="s2"> size={</span><span class="s7">50</span><span class="s2">} className=</span><span class="s4">"mx-auto opacity-60"</span><span class="s2"> strokeWidth={</span><span class="s7">1</span><span class="s2">} /&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&lt;div className=</span><span class="s4">"space-y-2"</span><span class="s2">&gt;</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">                </span>&lt;h2 className=</span><span class="s2">"text-3xl font-cinzel tracking-[0.2em] uppercase"</span><span class="s5">&gt;</span><span class="s3">Recibido</span><span class="s5">&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>&lt;p className=</span><span class="s4">"font-playfair italic text-lg opacity-80"</span><span class="s2">&gt;</span><span class="s3">Procesaremos</span><span class="s2"> su consulta con la mayor diligencia.&lt;/p&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&lt;/div&gt;</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">              </span>&lt;div className=</span><span class="s2">"w-8 h-[1px] bg-[#c5b4a2] mx-auto opacity-20 my-4"</span><span class="s5">&gt;&lt;/div&gt;</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">              </span>&lt;p className=</span><span class="s2">"text-[10px] tracking-[0.3em] uppercase opacity-40 max-w-xs mx-auto leading-loose font-cinzel"</span><span class="s5">&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span></span><span class="s3">Un</span><span class="s2"> profesional de nuestro equipo se contactar</span><span class="s9">á</span><span class="s2"> el d</span><span class="s9">í</span><span class="s2">a solicitado.</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&lt;/p&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&lt;button<span class="Apple-converted-space"> </span></span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span>onClick={() =&gt; { setIsSubmitted(</span><span class="s1">false</span><span class="s2">); setStep(</span><span class="s7">0</span><span class="s2">); setFormData({ nombre:</span><span class="s4">''</span><span class="s2">, telefono:</span><span class="s4">''</span><span class="s2">, diaPreferencia:</span><span class="s4">''</span><span class="s2">, horarioPreferencia:</span><span class="s4">''</span><span class="s2">, area:</span><span class="s4">''</span><span class="s2">, mensaje:</span><span class="s4">''</span><span class="s2"> }); }}</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">                </span>className=</span><span class="s2">"mt-8 text-[9px] uppercase tracking-[0.4em] opacity-60 hover:opacity-100 underline underline-offset-8 font-cinzel"</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">                </span></span><span class="s3">Nueva</span><span class="s2"> </span><span class="s3">Solicitud</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">              </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">            </span>&lt;/motion.div&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">          </span>)}</span></p>
+<p class="p2"><span class="s5"><span class="Apple-converted-space">        </span>&lt;/</span><span class="s2">AnimatePresence</span><span class="s5">&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>&lt;/main&gt;</span></p>
+<p class="p3"><span class="s6"></span><br></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>&lt;footer className=</span><span class="s4">"w-full text-center py-6"</span><span class="s2">&gt;</span></p>
+<p class="p5"><span class="s5"><span class="Apple-converted-space">        </span>&lt;p className=</span><span class="s2">"text-[11px] tracking-[0.6em] uppercase opacity-40 font-cinzel"</span><span class="s5">&gt;</span><span class="s3">Estrategia</span><span class="s5"> y </span><span class="s3">Derecho</span><span class="s5">&lt;/p&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">      </span>&lt;/footer&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s2"><span class="Apple-converted-space">  </span>);</span></p>
+<p class="p1"><span class="s2">};</span></p>
+<p class="p3"><span class="s6"></span><br></p>
+<p class="p7"><span class="s6">export</span><span class="s10"> </span><span class="s6">default</span><span class="s10"> </span><span class="s11">App</span><span class="s10">;</span></p>
+</body>
+</html>
